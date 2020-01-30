@@ -1,17 +1,18 @@
 ﻿// Copyright (c) 2015–Present Scott McDonald. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See License.md in the project root for license information.
 
-using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 
+using JsonApiFramework.Internal;
 using JsonApiFramework.Internal.Dom;
 using JsonApiFramework.Internal.Tree;
 using JsonApiFramework.JsonApi;
+using JsonApiFramework.ServiceModel;
 
 namespace JsonApiFramework.Server.Internal
 {
-    internal class RelationshipBuilder<TParentBuilder, TResource> : IRelationshipBuilder<TParentBuilder, TResource>
+    internal class RelationshipBuilder<TParentBuilder, TResource> : RelationshipBuilderBase<TResource>, IRelationshipBuilder<TParentBuilder, TResource>
         where TParentBuilder : class
         where TResource : class, IResource
     {
@@ -19,24 +20,44 @@ namespace JsonApiFramework.Server.Internal
         #region IRelationshipsBuilder<TParentBuilder, TResource> Implementation
         public IRelationshipBuilder<TParentBuilder, TResource> SetMeta(Meta meta)
         {
-            Contract.Requires(meta != null);
-
-            this.DomReadWriteRelationship.SetDomReadOnlyMeta(meta);
+            base.SetMetaInternal(meta);
             return this;
         }
 
         public IRelationshipBuilder<TParentBuilder, TResource> SetMeta(IEnumerable<Meta> metaCollection)
         {
-            var rel = this.Rel;
-            var detail = ServerErrorStrings.DocumentBuildExceptionDetailBuildLinkWithCollectionOfObjects
-                                           .FormatWith(DomNodeType.Meta, rel);
-            throw new DocumentBuildException(detail);
+            base.SetMetaInternal(metaCollection);
+            return this;
         }
 
         public IRelationshipLinksBuilder<IRelationshipBuilder<TParentBuilder, TResource>> Links()
         {
             var linksBuilder = new RelationshipLinksBuilder<IRelationshipBuilder<TParentBuilder, TResource>>(this, this.DomReadWriteRelationship, this.Rel);
             return linksBuilder;
+        }
+
+        public IRelationshipBuilder<TParentBuilder, TResource> SetData(IToOneResourceLinkage toOneResourceLinkage)
+        {
+            base.SetDataInternal(toOneResourceLinkage);
+            return this;
+        }
+
+        public IRelationshipBuilder<TParentBuilder, TResource> SetData(IEnumerable<IToOneResourceLinkage> toOneResourceLinkageCollection)
+        {
+            base.SetDataInternal(toOneResourceLinkageCollection);
+            return this;
+        }
+
+        public IRelationshipBuilder<TParentBuilder, TResource> SetData(IToManyResourceLinkage toManyResourceLinkage)
+        {
+            base.SetDataInternal(toManyResourceLinkage);
+            return this;
+        }
+
+        public IRelationshipBuilder<TParentBuilder, TResource> SetData(IEnumerable<IToManyResourceLinkage> toManyResourceLinkageCollection)
+        {
+            base.SetDataInternal(toManyResourceLinkageCollection);
+            return this;
         }
 
         public TParentBuilder RelationshipEnd()
@@ -48,27 +69,18 @@ namespace JsonApiFramework.Server.Internal
 
         // INTERNAL CONSTRUCTORS ////////////////////////////////////////////
         #region Constructors
-        internal RelationshipBuilder(TParentBuilder parentBuilder, IContainerNode<DomNodeType> domContainerNode, string rel)
+        internal RelationshipBuilder(TParentBuilder parentBuilder, IServiceModel serviceModel, IContainerNode<DomNodeType> domContainerNode, string rel)
+            : base(serviceModel, domContainerNode, rel)
         {
             Contract.Requires(parentBuilder != null);
-            Contract.Requires(domContainerNode != null);
-            Contract.Requires(String.IsNullOrWhiteSpace(rel) == false);
 
             this.ParentBuilder = parentBuilder;
-
-            var domReadWriteRelationships = (DomReadWriteRelationships)domContainerNode;
-            var domReadWriteRelationship = domReadWriteRelationships.AddDomReadWriteRelationship(rel);
-            this.DomReadWriteRelationship = domReadWriteRelationship;
-
-            this.Rel = rel;
         }
         #endregion
 
         // PRIVATE PROPERTIES ///////////////////////////////////////////////
         #region Properties
-        private TParentBuilder ParentBuilder { get; set; }
-        private DomReadWriteRelationship DomReadWriteRelationship { get; set; }
-        private string Rel { get; set; }
+        private TParentBuilder ParentBuilder { get; }
         #endregion
     }
 }

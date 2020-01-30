@@ -26,6 +26,18 @@ namespace JsonApiFramework.Server.Internal
             return linksBuilder;
         }
 
+        public IRelationshipBuilder<TParentBuilder, TResource> SetData(IToOneResourceLinkage toOneResourceLinkage)
+        { return this; }
+
+        public IRelationshipBuilder<TParentBuilder, TResource> SetData(IEnumerable<IToOneResourceLinkage> toOneResourceLinkageCollection)
+        { return this; }
+
+        public IRelationshipBuilder<TParentBuilder, TResource> SetData(IToManyResourceLinkage toManyResourceLinkage)
+        { return this; }
+
+        public IRelationshipBuilder<TParentBuilder, TResource> SetData(IEnumerable<IToManyResourceLinkage> toManyResourceLinkageCollection)
+        { return this; }
+
         public TParentBuilder RelationshipEnd()
         {
             var parentBuilder = this.ParentBuilder;

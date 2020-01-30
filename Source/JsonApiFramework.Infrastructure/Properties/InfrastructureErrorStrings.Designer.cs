@@ -62,6 +62,15 @@ namespace JsonApiFramework {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unable to build &apos;{0}&apos; for a single json:api relationship [rel={1}] with a collection of &apos;{0}&apos; objects..
+        /// </summary>
+        internal static string DocumentBuildExceptionDetailBuildRelationshipWithCollectionOfObjects {
+            get {
+                return ResourceManager.GetString("DocumentBuildExceptionDetailBuildRelationshipWithCollectionOfObjects", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unable to build &apos;{0}&apos; for a collection [count={1}] of CLR resources or CLR resource identifiers [type={2}] with a collection [count={3}] of &apos;{0}&apos; objects, collection counts mismatch. Make sure the collection counts are the same..
         /// </summary>
         internal static string DocumentBuildExceptionDetailBuildResourceCollectionCountMismatch {
@@ -85,6 +94,26 @@ namespace JsonApiFramework {
         internal static string DocumentBuildExceptionDetailBuildResourceWithCollectionOfObjects {
             get {
                 return ResourceManager.GetString("DocumentBuildExceptionDetailBuildResourceWithCollectionOfObjects", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to build CLR resource[type={0}] relationship[rel={1}] &apos;to-many&apos; resource linkage with &apos;to-one&apos; resource linkage..
+        /// </summary>
+        internal static string DocumentBuildExceptionDetailBuildToManyRelationshipResourceLinkageCardinalityMismatch {
+            get {
+                return ResourceManager.GetString("DocumentBuildExceptionDetailBuildToManyRelationshipResourceLinkageCardinalityMism" +
+                        "atch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to build CLR resource[type={0}] relationship[rel={1}] &apos;to-one&apos; resource linkage with &apos;to-many&apos; resource linkage..
+        /// </summary>
+        internal static string DocumentBuildExceptionDetailBuildToOneRelationshipResourceLinkageCardinalityMismatch {
+            get {
+                return ResourceManager.GetString("DocumentBuildExceptionDetailBuildToOneRelationshipResourceLinkageCardinalityMisma" +
+                        "tch", resourceCulture);
             }
         }
         
@@ -157,6 +186,15 @@ namespace JsonApiFramework {
         internal static string DocumentWriteExceptionTitle {
             get {
                 return ResourceManager.GetString("DocumentWriteExceptionTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The CLR resource [type={0} id={1}] has a &apos;to-one&apos; relationship [rel={2}] with different &apos;to-one&apos; resource linkage from user building [{3}] compared to user include [{4}]..
+        /// </summary>
+        internal static string DocumentWriteToOneResourceLinkageMismatch {
+            get {
+                return ResourceManager.GetString("DocumentWriteToOneResourceLinkageMismatch", resourceCulture);
             }
         }
         
