@@ -10,20 +10,13 @@ using JsonApiFramework.ServiceModel;
 
 namespace JsonApiFramework.Server.Internal
 {
-    internal class ToManyResourceLinkage<TResourceId> : IToManyResourceLinkage<TResourceId>
+    internal class NullToManyResourceLinkage : IToManyResourceLinkage
     {
         // PUBLIC CONSTRUCTORS //////////////////////////////////////////////
         #region Constructors
-        public ToManyResourceLinkage()
+        public NullToManyResourceLinkage()
         {
             this.HasValueCollection = false;
-            this.ValueCollection = Enumerable.Empty<TResourceId>();
-        }
-
-        public ToManyResourceLinkage(IEnumerable<TResourceId> valueCollection)
-        {
-            this.HasValueCollection = true;
-            this.ValueCollection = valueCollection.EmptyIfNull();
         }
         #endregion
 
@@ -32,18 +25,19 @@ namespace JsonApiFramework.Server.Internal
         public bool HasValueCollection { get; }
         #endregion
 
-        #region IToManyResourceLinkage<TResourceId> Implementation
-        public IEnumerable<TResourceId> ValueCollection { get; }
-        #endregion
-
         // PUBLIC METHODS ///////////////////////////////////////////////////
         #region IToOneResourceLinkage Implementation
         public IEnumerable<ResourceIdentifier> CreateApiResourceIdentifierCollection(IResourceType resourceType)
         {
             Contract.Requires(resourceType != null);
 
-            return this.ValueCollection.Select(resourceType.CreateApiResourceIdentifier);
+            return Enumerable.Empty<ResourceIdentifier>();
         }
+        #endregion
+
+        // PUBLIC FIELDS ////////////////////////////////////////////////////
+        #region Fields
+        public static readonly IToManyResourceLinkage Default = new NullToManyResourceLinkage();
         #endregion
     }
 }

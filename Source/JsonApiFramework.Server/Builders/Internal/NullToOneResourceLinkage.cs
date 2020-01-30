@@ -8,20 +8,13 @@ using JsonApiFramework.ServiceModel;
 
 namespace JsonApiFramework.Server.Internal
 {
-    internal class ToOneResourceLinkage<TResourceId> : IToOneResourceLinkage<TResourceId>
+    internal class NullToOneResourceLinkage : IToOneResourceLinkage
     {
         // PUBLIC CONSTRUCTORS //////////////////////////////////////////////
         #region Constructors
-        public ToOneResourceLinkage()
+        public NullToOneResourceLinkage()
         {
             this.HasValue = false;
-            this.Value = default(TResourceId);
-        }
-
-        public ToOneResourceLinkage(TResourceId value)
-        {
-            this.HasValue = true;
-            this.Value = value;
         }
         #endregion
 
@@ -30,20 +23,19 @@ namespace JsonApiFramework.Server.Internal
         public bool HasValue { get; }
         #endregion
 
-        #region IToOneResourceLinkage<TResourceId> Implementation
-        public TResourceId Value { get; }
-        #endregion
-
         // PUBLIC METHODS ///////////////////////////////////////////////////
         #region IToOneResourceLinkage Implementation
         public ResourceIdentifier CreateApiResourceIdentifier(IResourceType resourceType)
         {
             Contract.Requires(resourceType != null);
 
-            var clrResourceId = this.Value;
-            var apiResourceIdentifier = resourceType.CreateApiResourceIdentifier(clrResourceId);
-            return apiResourceIdentifier;
+            return null;
         }
+        #endregion
+
+        // PUBLIC FIELDS ////////////////////////////////////////////////////
+        #region Fields
+        public static readonly IToOneResourceLinkage Default = new NullToOneResourceLinkage();
         #endregion
     }
 }
