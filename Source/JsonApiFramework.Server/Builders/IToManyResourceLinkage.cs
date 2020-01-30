@@ -3,19 +3,29 @@
 
 using System.Collections.Generic;
 
+using JsonApiFramework.JsonApi;
+using JsonApiFramework.ServiceModel;
+
 namespace JsonApiFramework.Server
 {
-    public interface IToManyResourceLinkage<out TFromResource, out TToResource>
-        where TFromResource : class, IResource
-        where TToResource : class, IResource
+    public interface IToManyResourceLinkage
     {
         // PUBLIC PROPERTIES ////////////////////////////////////////////////
         #region Properties
-        TFromResource FromResource { get; }
+        bool HasValueCollection { get; }
+        #endregion
 
-        string FromRel { get; }
+        // PUBLIC METHODS ///////////////////////////////////////////////////
+        #region Methods
+        IEnumerable<ResourceIdentifier> CreateApiResourceIdentifierCollection(IResourceType resourceType);
+        #endregion
+    }
 
-        IEnumerable<TToResource> ToResourceCollection { get; }
+    public interface IToManyResourceLinkage<out TResourceId> : IToManyResourceLinkage
+    {
+        // PUBLIC PROPERTIES ////////////////////////////////////////////////
+        #region Properties
+        IEnumerable<TResourceId> ValueCollection { get; }
         #endregion
     }
 }
