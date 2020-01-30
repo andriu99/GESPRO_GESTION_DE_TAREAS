@@ -1,15 +1,15 @@
 // Copyright (c) 2015–Present Scott McDonald. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See License.md in the project root for license information.
-
-using JsonApiFramework.Conventions;
-
-namespace JsonApiFramework.ServiceModel.Configuration
+namespace JsonApiFramework.Conventions
 {
-    public interface IServiceModelFactory
+    public interface IConventionsBuilder
     {
         // PUBLIC METHODS ///////////////////////////////////////////////////
         #region Methods
-        IServiceModel Create(IConventions conventions);
+        INamingConventionsBuilder ApiAttributeNamingConventions();
+        INamingConventionsBuilder ApiTypeNamingConventions();
+
+        IResourceTypeConventionsBuilder ResourceTypeConventions();
         #endregion
     }
 }
